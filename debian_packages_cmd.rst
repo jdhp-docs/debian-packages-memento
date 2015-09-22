@@ -408,6 +408,16 @@ Convertir un paquet RPM en paquet Debian [TODO]
 La documentation de référence: http://www.debian.org/doc/manuals/debian-reference/ch02.fr.html
 
 
+License
+=======
+
+
+|Licence Creative Commons|_
+
+*Commandes utiles pour l'administration des paquets Debian* de `Jérémie Decock`_ est mis à
+disposition selon les termes de la `licence Creative Commons Attribution - Partage dans les Mêmes Conditions 4.0 International`_. 
+
+
 .. [#] Le système officiel du RaspberryPi_.
 .. [#] ``aptitude`` est notamment réputé mieux gérer les conflits de
        dépendances qu'``apt``.
@@ -424,4 +434,9 @@ La documentation de référence: http://www.debian.org/doc/manuals/debian-refere
 .. _aptitude: https://wiki.debian.org/fr/Aptitude
 .. _VLC: http://www.videolan.org/vlc/
 .. _Libre Office: https://fr.libreoffice.org/
+.. _Jérémie Decock: http://www.jdhp.org/
+.. _licence Creative Commons Attribution - Partage dans les Mêmes Conditions 4.0 International: http://creativecommons.org/licenses/by-sa/4.0/
+
+.. |Licence Creative Commons| image:: https://i.creativecommons.org/l/by-sa/4.0/80x15.png
+.. _Licence Creative Commons: http://creativecommons.org/licenses/by-sa/4.0/
 
