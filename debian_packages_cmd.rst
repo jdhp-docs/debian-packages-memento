@@ -61,12 +61,12 @@ leur nom avec la commande::
 
     apt-cache search -n <motif>
 
-Par exemple, si je veux installer la bibliothèque ``numpy`` pour Python3 sur un
-système Debian 8, je sais avec à la commande::
+Par exemple, si on souhaite installer la bibliothèque logicielle ``numpy`` pour
+Python3, nous savons avec à la commande::
 
     apt-cache search -n numpy
 
-que le paquet à installer s'appelle ``python3-numpy``.
+que le paquet à installer s'appelle ``python3-numpy`` (sur un système *Debian 8*).
 
 On peut aussi supprimer l'option ``-n`` pour étendre la recherche du motif à la
 description des paquets.
@@ -75,8 +75,8 @@ nom ou leur champ de description, on utilise la commande::
 
     apt-cache search mp3
 
-La liste retournée est probablement trop longue pour être vraiment utile. Dans ce cas, on peut
-affiner la recherche en utilisant plusieurs mots clés::
+La liste retournée est probablement trop longue pour être vraiment utile. Dans
+ce cas, on peut affiner la recherche en utilisant plusieurs mots clés::
 
     apt-cache search mp3 encoder
 
