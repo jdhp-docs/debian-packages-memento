@@ -88,7 +88,7 @@ Dans le dernier exemple, ``^lib.*mp3`` est ce qu'on appelle une *expression
 régulière* (ou *expression rationnelle*). La présentation des expressions
 régulières dépasse le cadre de cet article.
 Pour en savoir plus, je vous invite à consulter
-`l'article correspondant sur wikipedia<https://fr.wikipedia.org/wiki/Expression_rationnelle>`_
+`l'article correspondant sur wikipedia <https://fr.wikipedia.org/wiki/Expression_rationnelle>`__
 ainsi que les livres *Expressions régulières, le guide de survie* de Bernard
 Desgraupes aux éditions Pearson et *Les expressions régulières par l'exemple*
 de Vincent Fourmond aux éditions H&K.
