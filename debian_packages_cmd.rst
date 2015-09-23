@@ -219,24 +219,60 @@ Commandes plus "avancées"
 Télécharger un paquet sans l'installer
 --------------------------------------
 
-On peut télécharger un paquet Debian sans l'installer avec ``apt-get``::
+Chaque paquet Debian est contenu dans un fichier ``.deb``.
+Ces fichiers sont stockés dans des dépôts (généralement des serveurs web
+affiliés à Debian, Ubuntu, etc.). C'est de là que viennent les paquets
+installés avec ``apt-get install <paquets>``.
 
-    apt-get download <paquet>
+.. Par exemple http://ftp.fr.debian.org/debian/pool/main/.
 
-ou avec ``aptitude``::
+Il est possible de télécharger les paquets Debian provenant de ces dépôts, sans
+les installer, avec les commandes::
 
-    aptitude download <paquet>
+    apt-get download <paquets>
 
-Le paquet téléchargé est placé dans le répertoire courant (fichier ``.deb``).
+ou
+
+::
+
+    aptitude download <paquets>
+
+Les paquets téléchargés (fichiers ``.deb``) sont placés dans le répertoire courant.
 
 
 Extraire le contenu d'un paquet téléchargé
 ------------------------------------------
 
-Pour extraire le contenu d'un fichier ``.deb`` (téléchargé avec ``apt-get
-download`` ou ``aptitude download``), tapez::
+Nous avons vu dans la section précédente comment télécharger des paquets Debian
+depuis les dépôts de votre système.
+Voyons maintenant leur contenu.
+
+Les paquets Debian sont en fait des *archives* Unix portant l'extension
+``.deb``. Ainsi, ils sont semblables aux fichiers ``.tar`` très répendus sur les
+systèmes Unix ou aux fichiers ``.zip`` fréquement utilisés sous Windows.
+
+Tous les paquets Debian contiennent exactement 3 fichiers: ``control.tar.gz``,
+``data.tar.xz`` et ``debian-binary``.
+
+.. Pour extraire le contenu d'un fichier ``.deb``, tapez::
+
+Ces trois fichiers peuvent être extrait de n'importe quel paquet Debian avec la
+commande suivante::
 
     ar -x <paquet.deb>
+
+Les fichiers sont extrait dans le répertoire courant.
+Deux des fichiers extraits sont eux même des archives:
+
+- ``control.tar.gz`` est une archive au format ``tar`` compressé avec
+  l'algorithme *Deflate* (via la commande ``gzip``);
+- ``data.tar.xz`` est une archive au format ``tar`` compressé avec l'algorithme
+  *LZMA* (via la commande ``xz``).
+
+On peut extraire leur contenu respectif avec les commandes suivantes::
+
+    tar -xzvf control.tar.gz
+    tar -xJvf data.tar.xz
 
 
 Télécharger le code source d'un paquet
