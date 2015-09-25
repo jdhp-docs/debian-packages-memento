@@ -1,13 +1,43 @@
+.. -*- coding: utf-8 -*-
+
 =========================================================
 Commandes utiles pour l'administration des paquets Debian
 =========================================================
+
+:Author: Jérémie Decock
+:Contact: jd.jdhp@gmail.com
+:Revision: 1
+:Date: 22/09/2015
+:Copyright: Licence Creative Commons (CC-BY-SA)
+
+.. ............................................................................
+
+.. http://docutils.sourceforge.net/docs/ref/rst/directives.html#meta
+
+.. meta::
+    :author: Jérémie DECOCK
+    :description: Commandes utiles pour l'administration des paquets Debian
+    :keywords: debian, paquet, apt, aptitude, dpkg
+    :copyright: Copyright (c) 2015 Jérémie DECOCK
+
+.. ............................................................................
+
+.. http://docutils.sourceforge.net/docs/ref/rst/directives.html#automatic-section-numbering
+
+.. sectnum::
+
+.. ............................................................................
 
 .. raw:: latex
 
     \newpage
 
+.. ............................................................................
+
 .. Conventions typographiques de ce document sont calquées sur
 .. https://wiki.debian.org/fr/AptTools et https://wiki.debian.org/fr/AptCLI
+
+.. ............................................................................
 
 Ce document liste quelques commandes utiles pour l'administration des paquets
 Debian.
@@ -20,6 +50,10 @@ l'article. La seconde partie présente des commandes plus "avancées".
 .. Prérequis: suppose que vous connaissez les bases
 .. Le but de ce ... n'est pas de présenter les bases de l'administration de
 .. paquets Debian mais de fournir quelques commandes "avancées"
+
+.. http://docutils.sourceforge.net/docs/ref/rst/directives.html#table-of-contents
+
+.. contents:: Sommaire
 
 Avant-propos
 ============
@@ -248,8 +282,8 @@ depuis les dépôts de votre système.
 Voyons maintenant leur contenu.
 
 Les paquets Debian sont en fait des *archives* Unix portant l'extension
-``.deb``. Ainsi, ils sont semblables aux fichiers ``.tar`` très répendus sur les
-systèmes Unix ou aux fichiers ``.zip`` fréquement utilisés sous Windows.
+``.deb``. Ainsi, ils sont semblables aux fichiers ``.tar`` très répandus sur les
+systèmes Unix ou aux fichiers ``.zip`` fréquemment utilisés sous Windows.
 
 Tous les paquets Debian contiennent exactement 3 fichiers: ``control.tar.gz``,
 ``data.tar.xz`` et ``debian-binary``.
@@ -259,7 +293,7 @@ Tous les paquets Debian contiennent exactement 3 fichiers: ``control.tar.gz``,
 Ces trois fichiers peuvent être extrait de n'importe quel paquet Debian avec la
 commande suivante::
 
-    ar -x <paquet.deb>
+    ar -x <fichier.deb>
 
 Les fichiers sont extrait dans le répertoire courant.
 Deux des fichiers extraits sont eux même des archives:
@@ -275,8 +309,44 @@ On peut extraire leur contenu respectif avec les commandes suivantes::
     tar -xJvf data.tar.xz
 
 
-Télécharger le code source d'un paquet
---------------------------------------
+Afficher la liste des fichiers contenus dans un fichier .deb
+------------------------------------------------------------
+
+Si vous voulez obtenir la liste des fichiers et des répertoires contenus dans un
+fichier ``.deb`` sans rien extraire, tapez::
+
+    dpkg -c <fichier.deb>
+
+On peut désactiver l'affichage des répertoires avec::
+
+    dpkg -c <fichier.deb> | grep -v "^d"
+
+
+Installer un fichier .deb [TODO]
+--------------------------------
+
+La commande ``apt-get install`` permet uniquement d'installer des paquets
+stockés sur les dépôts du système.
+Elle ne permet pas d'installer des fichiers ``.deb`` stockés localement, hors
+des dépôts.
+
+.. ne permet pas d'installer des paquets récupérés en dehors des dépôts du système.
+
+Il arrive toutefois de devoir installer un paquet récupérés par exemple sur le web.
+Pour installer de tels paquets, il faut utiliser::
+
+    sudo dpkg -i <fichier.deb>
+
+Cette commande suppose que les autres paquets requis pour le bon fonctionnement
+de ``<fichier.deb>`` soient déjà installées sur le système.
+Contrairement à ``apt-get install``, la commande ``dpkg -i`` n'installera pas
+elle même ces *dépendances*.
+
+
+Télécharger le code source d'un paquet [TODO]
+---------------------------------------------
+
+TODO: différence entre paquet binaire et paquet source
 
 On peut très facilement étudier le code source de n'importe quel paquet Debian
 à l'aide de la commande suivante::
@@ -291,15 +361,21 @@ Il n'existe pas d'équivalent à cette commande pour aptitude.
 Découvrir à quel paquet appartient un fichier installé sur le système
 ---------------------------------------------------------------------
 
-On peut retrouver le nom du paquet qui a installé un fichier présent sur le
-système avec::
+Il est souvent très utile de savoir quel paquet à installé un exécutable donné
+sur notre système ou de savoir quel paquet est à l'origine de tel ou tel
+fichier de configuration, de données, etc.
 
-    dpkg -S /usr/bin/vlc
+On peut facilement retrouver le nom du paquet qui a installé un fichier présent
+sur le système avec::
+
+    dpkg -S <fichier>
 
 Par exemple::
 
-    dpkg -S /usr/bin/vlc
+    dpkg -S /etc/init.d/networking
 
+nous apprend que le fichier ``/etc/init.d/networking`` a été installé par le paquet
+``ifupdown`` (sur *Debian 8* du moins).
 
 Pour découvrir directement à quel paquet appartient une commande du système,
 tapez::
@@ -310,24 +386,30 @@ Par exemple::
 
     dpkg -S $( which vlc )
 
+nous apprend que la commande ``vlc`` (i.e. le fichier ``/usr/bin/vlc``) a été
+installé par le paquet ``vlc-nox`` (sur *Debian 8*).
+
+Notez que ``which <commande>`` ne fait que retourner l'emplacement d'une
+commande sur le système.
+
 
 Afficher la liste des fichiers installés par un paquet
 ------------------------------------------------------
 
-On peut afficher la liste des fichiers installés par un paquet avec::
+On peut obtenir la liste des fichiers installés par un paquet avec::
 
-    dpkg -L <paquet>
+    dpkg -L <paquets>
 
 
 La commande apt-file
 --------------------
 
-Les commandes ``dpkg -L`` et ``dpkg -S`` ne tiennent compte que des paquets
-déjà installés sur le système.
+Les commandes ``dpkg -L`` et ``dpkg -S`` présentées ci-dessus ne tiennent
+compte que des paquets déjà installés sur le système.
 
 Dans certains cas il peut être utile d'effectuer ces recherches sur l'ensemble
-des paquets disponibles et non pas seulement sur les paquets installés. C'est
-ce que permet la commande ``apt-file``.
+des paquets disponibles sur le dépôt et non pas seulement sur les paquets
+installés. C'est ce que permet la commande ``apt-file``.
 
 On peut installer ``apt-file`` et mettre à jours sa base de données avec::
 
@@ -347,6 +429,92 @@ et afficher la liste des fichiers qui seraient installés par un paquet avec::
 update`` pour tenir compte des modifications opérées sur les dépôts de paquets.
 
 
+Obtenir et déchiffrer le statut des paquets installés
+-----------------------------------------------------
+
+On peut obtenir le statut de tous les paquets installés avec la commande::
+
+    dpkg -l
+
+ou, si on souhaite supprimer l'entête retournée::
+
+    dpkg -l | tail -n +6
+
+
+La première colonne de chaque ligne est formée de 2 ou 3 lettres.
+Elle traduit le statut du paquet correspondant.
+
+La première lettre définit l'état souhaité du paquet:
+
+- ``u ...`` Inconnu
+- ``i ...`` Installer
+- ``r ...`` Désinstaller
+- ``p ...`` Purger (supprimer le programme et les fichiers de configuration)
+- ``h ...`` Ignorer ce paquet (marqué *hold*)
+
+La deuxième lettre défini l'état actuel du paquet:
+
+- ``n ...`` Le paquet n'est pas installé sur le système
+- ``i ...`` Le paquet est installé (correctement dépaqueté et configuré)
+- ``c ...`` Seuls les fichiers de configuration sont installés
+- ``u ...`` Le paquet est dépaqueté mais n'est pas configuré
+- ``f ...`` Le paquet est partiellement configuré (la configuration a échouée)
+- ``h ...`` Le paquet est partiellement installé (l'installation a échouée)
+- ``w ...`` Le paquet attend l'exécution d'une action différée qui est à la charge d'un autre paquet (*triggers-awaited*)
+- ``t ...`` Une action différée de ce paquet a été activée, il reste à l'exécuter (*triggers-pending*)
+
+La troisième lettre signale une éventuelle erreur (cette lettre est
+généralement absente):
+
+- ``r ...`` Le paquet est cassé et sa réinstallation est nécessaire
+
+Sur un système saint (sauf cas particuliers) la plupart des paquets doivent
+avoir le statut ``ii``.
+On peut afficher la liste des paquets qui n'ont pas le statut ``ii`` avec::
+
+    dpkg -l | tail -n +6 | grep -v "^ii "
+
+
+Plutôt que d'afficher le statut de tous les paquets installés, on peut afficher
+uniquement le statut d'un ou plusieurs paquets donnés avec::
+
+    dpkg -l <paquets> | tail -n +6
+
+
+Obtenir la taille effective d'un paquet [TODO]
+----------------------------------------------
+
+On peut obtenir une approximation de la taille totale des fichiers installés
+par un paquet en regardant le champ "*Installed-Size*" dans le résultat
+retourné par la commande ``apt-cache show <packet>``.
+
+Mais ce n'est pas très pratique car ``apt-cache show <packets>`` retourne plein
+d'autres informations sur le paquet.
+
+TODO
+Plutôt que d'adjoindre ``grep`` à la commande précédente en écrivant::
+
+    ``apt-cache show <packets> | grep "Installed-Size"``
+
+profitons-en pour utiliser une commande spécialement faite pour ça::
+
+    dpkg-query -Wf '${Installed-Size}\t${Package}\n' <paquets>
+
+Quelle que soit la méthode utilisée pour récupérer sa valeur, la taille décrite
+dans le champ "*Installed-Size*" est définie en *kibioctet_*.
+Un kibioctet (noté Kio) correspond à 1 024 octets, c'est à dire à peu près un
+kilooctet (noté ko).
+
+TODO
+https://www.debian.org/doc/debian-policy/ch-controlfields.html#s-f-Installed-Size
+
+On peut comparer le résultat obtenu avec la valeur exacte retourné par cette
+commande (beaucoup moins pratique à utiliser)::
+
+    du -ch $(for FILE in $(dpkg -L <paquet>) ; do \
+        if [ -f "${FILE}" ] ; then echo "${FILE}" ; fi ; done)
+
+
 Lister les paquets installés triés par taille croissante [TODO]
 ---------------------------------------------------------------
 
@@ -354,13 +522,16 @@ Lister les paquets installés triés par taille croissante [TODO]
 
     dpkg-query -Wf '${Installed-Size}\t${Package}\n' | sort -n
 
+
 Ou avec wajig (``sudo apt-get install wajig``)::
 
     wajig large
 
+.. 447204  texlive-latex-extra-doc
+.. 450M    total
 
-Générer une liste des paquets installés sur le système [TODO]
--------------------------------------------------------------
+Sauvegarder la liste des paquets installés sur le système [TODO]
+----------------------------------------------------------------
 
 ::
 
@@ -375,6 +546,18 @@ Générer une liste des paquets installés sur le système [TODO]
     dpkg --set-selections < LIST_FILE
     ...
 
+ne fait pas la distinction entre les paquets dont l'installation a été
+explicitement demandée par l'utilisateur et les dépendances automatiquement
+installées.
+
+Il peut être préférable de ne lister que les paquets ...::
+
+    (grep "^\[INSTALLÉ\]" /var/log/aptitude & zgrep "^\[INSTALLÉ\]" /var/log/aptitude*.gz) | awk '{print $2}' | sed -r "s/:i386//" | sort
+
+    aptitude install $(tr '\n' ' ' < ${DIR_BASE}/${FILE})
+
+TODO: supprimer le i386 dans cette commande...
+TODO: cette commande ne marche que pour les paquets installés avec aptitude...
 
 
 Afficher la liste des dépendances d'un paquet [TODO]
@@ -391,6 +574,8 @@ Supprimer le serveur X et toutes ses dépendances [TODO]
 ::
 
     sudo apt-get remove --auto-remove --purge "libx11-.*"
+
+Réfléchissez bien avant de taper cette commande...
 
 
 Apt-rdepends [TODO]
@@ -472,6 +657,7 @@ disposition selon les termes de la `licence Creative Commons Attribution - Parta
 .. _Libre Office: https://fr.libreoffice.org/
 .. _Jérémie Decock: http://www.jdhp.org/
 .. _licence Creative Commons Attribution - Partage dans les Mêmes Conditions 4.0 International: http://creativecommons.org/licenses/by-sa/4.0/
+.. _kibioctet: https://fr.wikipedia.org/wiki/Octet#Multiples_normalis.C3.A9s
 
 .. |Licence Creative Commons| image:: https://i.creativecommons.org/l/by-sa/4.0/80x15.png
 .. _Licence Creative Commons: http://creativecommons.org/licenses/by-sa/4.0/
