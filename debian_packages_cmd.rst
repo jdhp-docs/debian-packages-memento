@@ -8,7 +8,7 @@ Commandes utiles pour l'administration des paquets Debian
 :Contact: jd.jdhp@gmail.com
 :Revision: 1
 :Date: 22/09/2015
-:Copyright: Licence Creative Commons (CC-BY-SA)
+:Licence: `Creative Commons Attribution - Partage dans les Mêmes Conditions 4.0 International (CC BY-SA 4.0)`_
 
 .. ............................................................................
 
@@ -47,6 +47,12 @@ qu'Ubuntu_, `Linux Mint`_ ou encore Raspbian_ [#]_.
 Les commandes de base sont brièvement décrites dans la première partie de
 l'article. La seconde partie présente des commandes plus "avancées".
 
+.. note::
+
+    Nous ne parlerons pas ici des outils graphiques tels que Synaptic_.
+    Si vous êtes intéressés par Synaptic, vous trouverez de l'aide sur
+    http://doc.ubuntu-fr.org/synaptic et https://wiki.debian.org/fr/Synaptic.
+
 .. Prérequis: suppose que vous connaissez les bases
 .. Le but de ce ... n'est pas de présenter les bases de l'administration de
 .. paquets Debian mais de fournir quelques commandes "avancées"
@@ -81,6 +87,13 @@ administrateur_.
 
 Rappel des commandes de base
 ============================
+
+Définir les dépôts de paquets à utiliser [TODO]
+-----------------------------------------------
+
+TODO: explication dépôts
+
+/etc/apt/source.list
 
 Rechercher le nom d'un paquet
 -----------------------------
@@ -133,8 +146,8 @@ de Vincent Fourmond aux éditions H&K.
 ..     sudo apt-get update
 
 
-Afficher les informations disponibles sur un paquet
----------------------------------------------------
+Afficher les informations disponibles sur un paquet [TODO]
+----------------------------------------------------------
 
 On peut afficher les informations relatives à un paquet (version, taille,
 description, auteurs, dépendances, etc.) avec::
@@ -145,6 +158,8 @@ Par exemple::
 
     apt-cache show vlc
 
+TODO:
+Notion de dépendances
 
 Installer un ou plusieurs paquets
 ---------------------------------
@@ -211,12 +226,27 @@ Comme pour ``apt-get install``, il est recommandé de mettre à jours la liste
 des paquets disponibles au préalable avec ``apt-get update``.
 
 
-Nettoyer le cache d'apt
------------------------
+Nettoyer le cache d'apt [TODO]
+------------------------------
 
-Lorsque l'on utilise les commandes ``apt``, des fichier temporaires plus ou
-moins volumineux sont parfois créés.
-Ces fichiers peuvent être supprimés sans problème avec la commande::
+.. Lorsque l'on utilise les commandes ``apt``, des fichier temporaires plus ou
+.. moins volumineux sont parfois créés.
+
+Lorsque l'on utilise les commandes ``apt-get install`` et ``apt-get upgrade``,
+les paquets Debian sont téléchargés et stockés dans ``/var/cache/apt/archives``
+avant d'être installés.
+Pour diverses raisons, ils sont conservés dans ce répertoire, même après leur
+installation.
+
+.. Tous ces fichiers ``.deb`` cumulés dans ``/var/cache/apt/archives`` au fil des
+.. installations et des mises à jours peuvent alors rapidement occuper plusieurs
+.. centaines de mégaoctets inutilement.
+
+Vous pouvez donc rapidement vous retrouver avec des centaines de mégaoctets de
+fichiers ``.deb`` dans ``/var/cache/apt/archives``.
+
+Ces fichiers sont inutiles pour la plupart des utilisateurs et ils peuvent être
+supprimés sans problème avec la commande::
 
     sudo apt-get clean
 
@@ -590,6 +620,34 @@ Deborphan [TODO]
 ...
 
 
+TODO
+----
+
+lister les versions disponibles pour un paquet::
+
+    apt-cache madison
+
+afficher des statistiques sur ...::
+
+    apt-cache stats
+
+lister les dépendances d'un ou plusieurs paquets::
+
+    apt-cache depends <paquets>
+    apt-cache depends --recursive <paquets>
+    apt-cache depends --installed <paquets>
+
+    apt-cache rdepends <paquets>
+    apt-cache rdepends --recursive <paquets>
+    apt-cache rdepends --installed <paquets>
+
+    apt-cache showsrc <motif>
+
+    apt-cache dotty <paquets>
+
+    apt-cache xvcg <paquets>
+
+
 Convertir un paquet RPM en paquet Debian [TODO]
 -----------------------------------------------
 
@@ -636,7 +694,7 @@ License
 |Licence Creative Commons|_
 
 *Commandes utiles pour l'administration des paquets Debian* de `Jérémie Decock`_ est mis à
-disposition selon les termes de la `licence Creative Commons Attribution - Partage dans les Mêmes Conditions 4.0 International`_. 
+disposition selon les termes de la licence `Creative Commons Attribution - Partage dans les Mêmes Conditions 4.0 International (CC BY-SA 4.0)`_. 
 
 
 .. [#] Le système officiel du RaspberryPi_.
@@ -656,8 +714,9 @@ disposition selon les termes de la `licence Creative Commons Attribution - Parta
 .. _VLC: http://www.videolan.org/vlc/
 .. _Libre Office: https://fr.libreoffice.org/
 .. _Jérémie Decock: http://www.jdhp.org/
-.. _licence Creative Commons Attribution - Partage dans les Mêmes Conditions 4.0 International: http://creativecommons.org/licenses/by-sa/4.0/
+.. _Creative Commons Attribution - Partage dans les Mêmes Conditions 4.0 International (CC BY-SA 4.0): http://creativecommons.org/licenses/by-sa/4.0/deed.fr
 .. _kibioctet: https://fr.wikipedia.org/wiki/Octet#Multiples_normalis.C3.A9s
+.. _Synaptic: https://fr.wikipedia.org/wiki/Synaptic
 
 .. |Licence Creative Commons| image:: https://i.creativecommons.org/l/by-sa/4.0/80x15.png
 .. _Licence Creative Commons: http://creativecommons.org/licenses/by-sa/4.0/
