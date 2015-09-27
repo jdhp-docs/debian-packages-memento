@@ -51,7 +51,20 @@ $(NAME).html: $(SRCFILES)
 pdf: $(NAME).pdf
 
 $(NAME).pdf: $(SRCFILES)
-	#rst2pdf -o $@ $(NAME).rst
+	rst2pdf --language=$(LANGUAGE) --repeat-table-rows -o $@ $(NAME).rst
+
+# ODT #############
+
+odt: $(NAME).odt
+
+$(NAME).odt: $(SRCFILES)
+	rst2odt $(NAME).rst $@
+
+# PDF Latex #######
+
+pdf-latex: $(NAME).latex.pdf
+
+$(NAME).latex.pdf: $(SRCFILES)
 	#pandoc --toc -N  -V papersize:"a4paper" -V geometry:"top=2cm, bottom=3cm, left=2cm, right=2cm" -V "fontsize:12pt" -o $@ $(NAME).rst
 	pandoc --toc -N  -V papersize:"a4paper" -V "fontsize:12pt" -o $@ $(NAME).rst
 
@@ -85,7 +98,10 @@ clean:
 
 init: clean
 	@echo "suppression des fichiers cibles"
-	@rm -vf $(NAME).pdf
 	@rm -vf $(NAME).html
+	@rm -vf $(NAME).pdf
+	@rm -vf $(NAME).latex.pdf
+	@rm -vf $(NAME).odt
+	@rm -vf $(NAME).latex
 	@rm -vf $(NAME)_slides.html
 
