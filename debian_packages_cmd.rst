@@ -61,6 +61,12 @@ l'article. La seconde partie présente des commandes plus "avancées".
 
 .. contents:: Sommaire
 
+.. Break the page for rst2pdf
+
+.. raw:: pdf
+
+    PageBreak
+
 Avant-propos
 ============
 
@@ -718,6 +724,6 @@ disposition selon les termes de la licence `Creative Commons Attribution - Parta
 .. _kibioctet: https://fr.wikipedia.org/wiki/Octet#Multiples_normalis.C3.A9s
 .. _Synaptic: https://fr.wikipedia.org/wiki/Synaptic
 
-.. |Licence Creative Commons| image:: https://i.creativecommons.org/l/by-sa/4.0/80x15.png
+.. |Licence Creative Commons| image:: ./images/cc_by_sa_80x15.png
 .. _Licence Creative Commons: http://creativecommons.org/licenses/by-sa/4.0/
 
