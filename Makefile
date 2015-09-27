@@ -11,7 +11,7 @@ LANGUAGE=fr
 
 MATH_OUTPUT="MathJax"
 
-SOURCE_URL="https://github.com/jdhp-docs"
+SOURCE_URL="https://github.com/jdhp-docs/debian_packages_cmd"
 
 STYLESHEET="rst2html.css"
 
@@ -43,7 +43,7 @@ $(NAME).html: $(SRCFILES)
 	rst2html --title=$(TITLE) --date --time --generator \
 		--language=$(LANGUAGE) --tab-width=4 --math-output=$(MATH_OUTPUT) \
 		--source-url=$(SOURCE_URL) --stylesheet=$(STYLESHEET) \
-		--section-numbering --embed-stylesheet \
+		--section-numbering --embed-stylesheet --strip-comments \
 		$(NAME).rst $@
 
 # PDF #############
