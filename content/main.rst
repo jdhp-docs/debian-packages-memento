@@ -22,15 +22,71 @@ Les commandes préfixées par le mot ``sudo`` sont uniquement accessibles en mod
 administrateur_.
 
 
-Rappel des commandes de base
-============================
+Les commandes de base
+=====================
+
+Introduction [TODO]
+-------------------
+
+Les moyens mis à disposition pour permettre à l'utilisateur d'installer et
+mettre à jours des logiciels sur la majorité des systèmes Linux est très
+singulière dans le paysage informatique.
+
+Contrairement aux systèmes Microsoft Windows ou MacOSX, la plupart des systèmes Linux reposent sur un xxde gestion de *paquets*.
+une sorte de grand catalogue de ... 
+: principal ... pour installer logiciels, bibliothèques logiciels, manuels, etc.
+
+Ces systèmes de paquets ont très certainement inspirés les "app. stores" qui ont fait le succès des systèmes iOS et Android.
+
+paquet contient tout le nécessaire pour installer un programme
+
+En plus du programme et des données à installer, un paquet contient de nombreuses informations (appelées *metadonnées*) telles que la liste des programmes
+ou bibliothèques logicielles dont il à besoin pour fonctionner (ce qu'on
+appelle des *dépendances*), la version du paquet, l'architecture matérielle
+pour laquelle il a été conçu, etc.
+
+des programmes appelés gestionnaires de paquets se chargent d'installer ou mettre à jours programmes à la demande de l'utilisateur en automatisant 
+la récupération des paquets, ... versions, ... dépendances, la gestion des conflits avec...
+
+Les systèmes Debian et ses nombreux dérivés (Ubuntu, Linux Mint, Raspbian, etc.) utilisent ...
+performant...
+Debian 8 : ... paquets totalisant environ ... gigaoctets de données.
+
+D'autres systèmes Linux utilisent ... similaire mais incompatibles (RPM pour les systèmes RedHat et ses dérivés, ... pour Slackware, ... pour Gentoo, etc.).
+
 
 Définir les dépôts de paquets à utiliser [TODO]
 -----------------------------------------------
 
-TODO: explication dépôts
+Sauf cas particuliers, les paquets Debian installés sur votre système
+proviennent de ce qu'on appelle des *dépôts* (de paquets).
+Ces dépôts sont généralement des serveurs web affiliés à Debian, Ubuntu, etc.
+Par exemple, le dépôt officiel de la dernière version stable de Debian est
+``http://ftp.debian.org/debian/pool/main/`` et le dépôt officiel de la dernière
+version stable d'Ubuntu est ``...``.
 
-/etc/apt/source.list
+Il existe également de nombreux dépôts alternatifs appelés *miroirs*, qui ne
+sont que des copies de ces miroirs officiels
+géographiquement
+pour mieux 
+répartir
+bande passante
+
+Les supports d'installation du système (CDs, DVDs, clés USB, etc.) peuvent
+également être considérés comme des dépôts de paquets (de fait, il n'est pas
+nécessaire d'être connecté à Internet pour installer ou mettre à jours les
+paquets d'un système Debian).
+
+.. Votre système peut utiliser plusieurs dépôts et vous pouvez choisir les dépôts à utiliser.
+
+Votre système peut utiliser plusieurs dépôts et vous pouvez définir cette liste
+de dépôts.
+Ces dépôts définissent en quelque sorte le catalogue des applications que vous pouvez installer sur votre système via votre gestionnaire de paquets.
+
+Vous pouvez ajouter, modifier ou supprimer  en éditant le fichier ``/etc/apt/source.list``.
+
+...
+
 
 Rechercher le nom d'un paquet
 -----------------------------
@@ -69,9 +125,9 @@ ou en utilisant des motifs plus sophistiqués tels que::
     apt-cache search ^lib.*mp3
 
 Dans le dernier exemple, ``^lib.*mp3`` est ce qu'on appelle une *expression
-régulière* (ou *expression rationnelle*). La présentation des expressions
-régulières dépasse le cadre de cet article.
-Pour en savoir plus, je vous invite à consulter
+régulière* (ou *expression rationnelle*). Les expressions régulières sont des
+outils puissants mais leur présentation dépasse largement le cadre de cet
+article.  Pour en savoir plus, je vous invite donc à consulter
 `l'article correspondant sur wikipedia <https://fr.wikipedia.org/wiki/Expression_rationnelle>`__
 ainsi que les livres *Expressions régulières, le guide de survie* de Bernard
 Desgraupes aux éditions Pearson et *Les expressions régulières par l'exemple*
@@ -83,20 +139,29 @@ de Vincent Fourmond aux éditions H&K.
 ..     sudo apt-get update
 
 
-Afficher les informations disponibles sur un paquet [TODO]
-----------------------------------------------------------
+Afficher les informations disponibles sur un paquet
+---------------------------------------------------
 
-On peut afficher les informations relatives à un paquet (version, taille,
-description, auteurs, dépendances, etc.) avec::
+On peut facilement afficher les informations relatives à un paquet telles que
+sont numéro de version, sa taille, sa description, ses auteurs, ses
+dépendances, l'adresse de son site web, etc.
+Pour cela, il suffit d'utiliser la commande::
 
     apt-cache show <paquets>
 
-Par exemple::
+Par exemple, la commande
 
-    apt-cache show vlc
+::
 
-TODO:
-Notion de dépendances
+    apt-cache show gnuchess
+
+nous informe (entre autre) que le programme *gnuchess* est un jeu d'échec, que
+son site web est accessible à l'adresse http://www.gnu.org/software/chess/ et
+qu'il a besoin que les paquets ``libc6``, ``libgcc1`` et ``libstdc++6`` soient
+installés pour pouvoir fonctionner correctement.
+
+.. On peut également voir qu'il suggère l'installation du paquet ``xboard`` afin de l'utiliser avec .
+
 
 Installer un ou plusieurs paquets
 ---------------------------------
@@ -114,7 +179,11 @@ Par exemple, pour installer VLC_::
 
     sudo apt-get install vlc
 
-Pour installer VLC_ et `Libre Office`_::
+Tous les paquets nécessaires au bon fonctionnement de VLC (i.e. ses
+*dépendances*) seront automatiquement installés !
+
+Si on veut installer plusieurs logiciels d'un coup, par exemple VLC_ et `Libre
+Office`_, on écrit::
 
     sudo apt-get install vlc libreoffice
 
@@ -126,10 +195,11 @@ On peut supprimer un ou plusieurs paquets avec::
 
     sudo apt-get remove <paquets>
 
-La suppression d'un paquet avec ``apt-get remove`` laisse ses fichiers de
-configuration sur le système.
+Par défaut, la commande ``apt-get remove`` ne supprime pas les éventuels fichiers de
+configuration générés par le(s) paquet(s).
 
-Pour supprimer un paquet et les fichiers de configuration qu'il a généré, tapez::
+Pour supprimer des paquets ainsi que tous les fichiers de configuration qu'ils
+ont générés, tapez::
 
     sudo apt-get purge <paquets>
 
@@ -139,12 +209,12 @@ ou
 
     sudo apt-get remove --purge <paquets>
 
-Pour supprimer les dépendances paquet devenues inutiles sur le système (i.e.
+Pour supprimer les dépendances devenues inutiles sur le système (i.e.
 utilisées par aucun autre paquet installé), utilisez la commande::
 
     sudo apt-get autoremove
 
-ou dans la commande ``apt-get remove``::
+ou directement dans la commande ``apt-get remove``::
 
     sudo apt-get remove --auto-remove <paquets>
 
@@ -153,18 +223,22 @@ Mettre à jour tous les paquets du système
 -----------------------------------------
 
 Les paquets sont régulièrement mis à jours pour corriger d'éventuels bugs ou
-failles de sécurités. La commande ``apt-get upgrade`` permet d'appliquer toutes
-les mises à jours disponibles pour les paquets installés sur le système::
+simplement pour ajouter de nouvelles fonctionnalités. La commande ``apt-get
+upgrade`` permet d'appliquer toutes les mises à jours disponibles pour les
+paquets installés sur le système::
 
     sudo apt-get update
     sudo apt-get upgrade
 
-Comme pour ``apt-get install``, il est recommandé de mettre à jours la liste
+Il est recommandé d'utiliser régulièrement ``apt-get upgrade`` pour mettre à
+jour le système et résoudre d'éventuelles failles de sécurité.
+
+Comme pour ``apt-get install``, il est préférable de mettre à jours la liste
 des paquets disponibles au préalable avec ``apt-get update``.
 
 
-Nettoyer le cache d'apt [TODO]
-------------------------------
+Nettoyer le cache d'apt
+-----------------------
 
 .. Lorsque l'on utilise les commandes ``apt``, des fichier temporaires plus ou
 .. moins volumineux sont parfois créés.
@@ -179,7 +253,7 @@ installation.
 .. installations et des mises à jours peuvent alors rapidement occuper plusieurs
 .. centaines de mégaoctets inutilement.
 
-Vous pouvez donc rapidement vous retrouver avec des centaines de mégaoctets de
+Ainsi, vous pouvez rapidement vous retrouver avec des centaines de mégaoctets de
 fichiers ``.deb`` dans ``/var/cache/apt/archives``.
 
 Ces fichiers sont inutiles pour la plupart des utilisateurs et ils peuvent être
@@ -191,9 +265,10 @@ supprimés sans problème avec la commande::
 La commande ``aptitude`` 
 ------------------------
 
-La commande aptitude_ est une alternative efficace [#]_ aux commandes ``apt``.
+La commande aptitude_ est une alternative efficace [#]_ aux commandes
+``apt-get`` et ``apt-cache``.
 Elle est installée par défaut sur Debian mais pas sur Ubuntu.
-Vous pouvez l'installer avec la commande suivante::
+Si ce n'est pas déjà fait, vous pouvez l'installer avec la commande suivante::
 
     sudo apt-get install <paquets>
 
